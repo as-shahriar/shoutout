@@ -213,7 +213,9 @@ h6,
 .main {
     min-height: 100%;
     padding: 30px 0px;
-    background-image: linear-gradient(to right, #56ab2f, #a8e063);
+    background-image: linear-gradient(to right, rgba(86, 171, 47, 0.8), hsla(87, 67%, 63%, 0.8)), url("/static/main/img/bg.jpg");
+    background-position: bottom;
+    background-size: cover;
 }
 
 /* Backgrounds */
