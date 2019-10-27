@@ -184,10 +184,13 @@ h6,
     left: 0px;
     z-index: 999;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.45);
+
 }
+
 
 .header .logo h1 {
     line-height: 48px;
+
 }
 
 .header .logo a {
@@ -235,7 +238,7 @@ h6,
 }
 
 .btn-primary {
-    background: #a8e063;
+    background: #88c63b;
 }
 
 .btn-primary:hover {
@@ -243,7 +246,7 @@ h6,
 }
 
 .btn-success {
-    background: #a8e063;
+    background: #88c63b;
     transition: transform .2s;
 }
 
@@ -319,12 +322,14 @@ button:focus {
 
 .signup-form {
     background: rgba(255, 255, 255, 0.39);
-    padding: 10px 20px;
+    padding: 18px 20px;
     border-radius: 2px;
     margin-top: 35px;
     box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.4);
 
 }
+
+
 
 /* Responsive */
 @media (max-width:768px) {
