@@ -301,8 +301,9 @@ button:focus {
 }
 
 .input-lg {
-    font-size: 18px;
+    font-size: 15px;
     padding: 10px 20px;
+    margin-bottom: 15px;
 }
 
 .inline-form input {
@@ -312,7 +313,7 @@ button:focus {
 .form-group {
     display: inline-block;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 #forget {
@@ -370,6 +371,42 @@ button:focus {
     border: 2px solid rgba(214, 12, 12, 0.836) !important;
 }
 
+#fname .input-lg {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin-bottom: 20px !important;
+}
+
+#username,
+#pass {
+    margin-bottom: 8px;
+}
+
+input {
+    background-color: rgba(255, 255, 255, 0.966);
+}
+
+input:focus {
+    background-color: #fff;
+    border: 1.5px solid #56ab2f !important;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Responsive */
@@ -390,4 +427,6 @@ button:focus {
 
         width: 100%;
     }
+
+
 }

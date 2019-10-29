@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 
@@ -53,6 +54,11 @@ def signupJs(request):
     }
 
     return JsonResponse(data)
+
+
+@login_required
+def homeView(request):
+    return render(request, 'main/home.html')
 
 
 def loginView(request):
