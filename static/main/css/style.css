@@ -192,6 +192,7 @@ h6,
 
 .header .logo h1 {
     line-height: 48px;
+    cursor: pointer;
 
 }
 
@@ -242,27 +243,35 @@ h6,
 }
 
 .btn-primary {
-    background: #88c63b;
+    background-image: linear-gradient(to right, #75be52, #56ab2f, #75be52);
+    border: none;
+    background-size: 250%;
+    transition: 0.6s;
+
+    cursor: pointer;
 }
 
-.btn-primary:hover {
-    background: #7bca1a;
+.btn-primary:hover,
+.btn-primary:focus {
+    background-position: right;
 }
 
 .btn-success {
-    background: #88c63b;
-    transition: transform .2s;
+    background-image: linear-gradient(to right, #75be52, #56ab2f, #75be52);
+    border: none;
+    background-size: 250%;
+    transition: 0.6s;
+    cursor: pointer;
 }
 
-.btn-success:hover {
-    background: #7bca1a;
-}
-
+.btn-success:hover,
+.btn-success:focus,
 .btn-success:active {
-
-
-    transform: translateY(3px);
+    background-position: right;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
 }
+
+
 
 /*Text*/
 .text-primary {
@@ -419,8 +428,9 @@ input:focus {
         position: relative;
     }
 
-    .header .logo {
-        text-align: center
+    .header .logo h1 {
+        text-align: center;
+
     }
 
     .alert-box {

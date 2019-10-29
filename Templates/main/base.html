@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{% static 'main/img/favicon.png'%}" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'main/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'main/css/style_all.css'%}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+
+            <div class="navbar-header">
+                <li class="soutout"><a href="#">ShoutOut</a></li>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'home_url'%}">Home</a></li>
+                    <li><a href="members.html">Members</a></li>
+                    <li><a href="groups.html">Groups</a></li>
+                    <li><a href="{% url 'profile_url'%}">Profile</a></li>
+                    <li><a href="{% url 'logout_url' %}">Logout</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+    {% block base %}
+    {% endblock %}
+
+    <footer>
+        <div class="container">
+            <p>ShoutOut &copy; 2019</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="{% static 'main/js/bootstrap.js'%}"></script>
+</body>
+
+</html>

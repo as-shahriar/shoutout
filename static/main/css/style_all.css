@@ -1,15 +1,3 @@
-@keyframes title_slide_down {
-	0% {
-		opacity: 0;
-		transform: translateY(-15px);
-	}
-
-	10% {
-		opacity: 1;
-		transform: translateY(0px);
-	}
-}
-
 header {
 	background-image: linear-gradient(#04519b, #044687 60%, #033769);
 	color: #fff;
@@ -184,7 +172,7 @@ footer p {
 	font-weight: 900;
 	float: left;
 	list-style-type: none;
-	animation: title_slide_down 8s ease-out;
+
 
 
 }

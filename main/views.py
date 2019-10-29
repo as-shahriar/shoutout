@@ -61,6 +61,11 @@ def homeView(request):
     return render(request, 'main/home.html')
 
 
+@login_required
+def profileView(request):
+    return render(request, 'main/profile.html')
+
+
 def loginView(request):
     return render(request, 'main/index.html')
 
