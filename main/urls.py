@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.loginView, name="login_url"),
     path('logout/', views.logoutView, name="logout_url"),
     path('loginjs/', views.loginJs),
+    path('signupjs/', views.signupJs),
 ]

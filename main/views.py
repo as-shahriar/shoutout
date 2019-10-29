@@ -26,6 +26,35 @@ def loginJs(request):
     return JsonResponse(data)
 
 
+def signupJs(request):
+    status = "404"
+    if request.method == "POST":
+        fname = request.POST.get('fname').strip().title()
+        lname = request.POST.get('lname').strip().title()
+        username = request.POST.get('username').lower().strip()
+        email = request.POST.get('email').strip().lower()
+        password = request.POST.get('pwd')
+
+        if fname != "" and lname != "" and username != "" and email != "" and password != "":
+            if (User.objects.filter(email__iexact=email).count()) != 0 or (User.objects.filter(username__iexact=username).count()) != 0:
+                return JsonResponse({'status': "404"})
+
+            user = User()
+            user.first_name = fname
+            user.last_name = lname
+            user.username = username
+            user.email = email
+            user.set_password(password)
+            user.save()
+            status = "200"
+
+    data = {
+        'status': status
+    }
+
+    return JsonResponse(data)
+
+
 def loginView(request):
     return render(request, 'main/index.html')
 
