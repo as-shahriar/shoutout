@@ -1,39 +1,35 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.http import JsonResponse
+
+
+def loginJs(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+
+    user = authenticate(username=username, password=password)
+    if user is None:
+        try:
+            obj = User.objects.get(email=username)
+            user = authenticate(username=obj.username, password=password)
+        except:
+            status = "404"
+    if user is not None:
+        login(request, user)
+        status = "200"
+
+    data = {
+        'status': status
+    }
+    return JsonResponse(data)
 
 
 def loginView(request):
-    if request.method == 'POST' and 'Login' in request.POST:
-        username_or_email = request.POST.get('user_email')
-        password = request.POST.get('user_password')
-        user = authenticate(username=username_or_email, password=password)
-        if user is None:
-            try:
-                obj = User.objects.get(email=username_or_email)
-                user = authenticate(username=obj.username, password=password)
-            except:
-                messages.error(request, "Error")
-        if user is not None:
-            login(request, user)
-            print("##############LOGIN#################")
-            return redirect('login_url')
-    elif request.method == 'POST' and 'register' in request.POST:
-        fname = request.POST.get('fname')
-        lname = request.POST.get('lname')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('pwd')
-
-        try:
-            user = User()
-            user.first_name = fname
-            user.last_name = lname
-            user.username = username
-            user.email = email
-            user.password = password
-            user.save()
-        except:
-            raise
     return render(request, 'main/index.html')
+
+
+def logoutView(request):
+    logout(request)
+    return redirect('login_url')

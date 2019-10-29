@@ -62,9 +62,7 @@ a {
     height: auto;
 }
 
-p {
-    margin-bottom: 5px;
-}
+
 
 h1,
 .h1 {
@@ -350,20 +348,27 @@ button:focus {
 .alert-box {
     background-image: linear-gradient(to right, #cf000e, #db2d2d);
     box-shadow: 1px 3px 5px rgba(22, 22, 22, 0.699);
-    font-size: 20px;
-    padding: 15px;
+    font-size: 15px;
+    padding: 12px;
+    font-weight: 400;
     display: inline-block;
     color: #fff;
-    width: 15%;
+    width: 100%;
+    opacity: 0.9;
     position: absolute;
-    top: 80;
-    z-index: 77777777;
+
 }
+
+
 
 .hide {
     display: none;
 }
 
+
+.red-border {
+    border: 2px solid rgba(214, 12, 12, 0.836) !important;
+}
 
 
 

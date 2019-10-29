@@ -1,26 +1,77 @@
-alert_hide();
+var luser = $("#username");
+var lpass = $("#pass");
+var alert = $("#alert-box");
+
 
 function login_validation() {
-    if (document.getElementById('username').value != '' && document.getElementById('pass').value != '') {
-        return true;
+    if (luser.val() == "") {
+        luser.addClass("red-border");
+    } else {
+        luser.removeClass("red-border");
     }
-    $("#alert-box").removeClass("hide");
-    alert_hide();
+
+    if (lpass.val() == "") {
+        lpass.addClass("red-border");
+    } else {
+        lpass.removeClass("red-border");
+    }
+
+
+    if (luser.val() != "" && lpass.val() != "") {
+        var username = luser.val();
+        var password = lpass.val();
+        var csrftoken = getCookie('csrftoken');
+        // console.log(csrftoken);
+
+        $.ajax({
+            type: "POST",
+            url: '/loginjs/',
+            data: {
+                'csrfmiddlewaretoken': csrftoken,
+                'username': username,
+                'password': password
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log("success");
+                if (data.status == "200") location.href = "";
+                else {
+                    alert.removeClass("hide");
+                    alert_hide();
+                }
+
+            },
+            error: function () {
+                console.log("Error");
+            }
+
+        });
+    }
     return false;
+
 }
 
-function reg_validation() {
-    if (document.getElementById('fname').value != '' && document.getElementById('lname').value != '' && document.getElementById('reg_username').value != '' && document.getElementById('reg_pass').value != '' && document.getElementById('email').value != '') {
-        return true;
+
+
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-    $("#alert-box").removeClass("hide");
-    alert_hide();
-    return false;
+    return cookieValue;
 }
 
 function alert_hide() {
     setTimeout(function () {
-        $("#alert-box1").addClass("hide");
-        $("#alert-box").addClass("hide");
+        alert.addClass("hide");
     }, 5000);
 }
