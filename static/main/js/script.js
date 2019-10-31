@@ -9,6 +9,33 @@ var r_username = $("#reg_username");
 var email = $("#email");
 var r_pass = $("#reg_pass");
 
+
+r_username.change(function (e) {
+
+  $.ajax({
+    type: "GET",
+    url: "/username_check/",
+    data: {
+      username: r_username.val(),
+    },
+    dataType: "json",
+    success: function (data) {
+      // console.log("success");
+      if (data.status == "404") {
+        r_username.addClass("red-border");
+      } else {
+        r_username.removeClass("red-border");
+      }
+      // console.log(data.status);
+    },
+    error: function () {
+      // console.log("Error");
+    }
+  });
+
+});
+
+
 function reg_validation() {
   if (fname.val() == "") {
     fname.addClass("red-border");
@@ -58,7 +85,7 @@ function reg_validation() {
         pwd: r_pass.val()
       },
       dataType: "json",
-      success: function(data) {
+      success: function (data) {
         console.log("success");
         if (data.status == "200") {
           location.href = home_url;
@@ -71,7 +98,7 @@ function reg_validation() {
         }
         console.log(data.status);
       },
-      error: function() {
+      error: function () {
         console.log("Error");
       }
     });
@@ -107,7 +134,7 @@ function login_validation() {
         password: password
       },
       dataType: "json",
-      success: function(data) {
+      success: function (data) {
         console.log("success");
         if (data.status == "200") location.href = home_url;
         else {
@@ -115,7 +142,7 @@ function login_validation() {
           alert_hide();
         }
       },
-      error: function() {
+      error: function () {
         console.log("Error");
       }
     });
@@ -140,7 +167,7 @@ function getCookie(name) {
 }
 
 function alert_hide() {
-  setTimeout(function() {
+  setTimeout(function () {
     alert.addClass("hide");
   }, 5000);
 }

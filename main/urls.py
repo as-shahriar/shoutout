@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout/', views.logoutView, name="logout_url"),
     path('loginjs/', views.loginJs),
     path('signupjs/', views.signupJs),
+    path('username_check/', views.is_available),
 ]

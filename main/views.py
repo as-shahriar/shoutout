@@ -6,6 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 
+def is_available(request):
+    username = request.GET.get('username').lower().strip()
+    if User.objects.filter(username__iexact=username).count() != 0:
+        return JsonResponse({'status': '404'})
+    else:
+        return JsonResponse({'status': '200'})
+
+
 def loginJs(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -47,6 +55,7 @@ def signupJs(request):
             user.email = email
             user.set_password(password)
             user.save()
+            login(request, user)
             status = "200"
 
     data = {
