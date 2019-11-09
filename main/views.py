@@ -9,6 +9,9 @@ from django.http import JsonResponse
 
 def is_available(request):
     username = request.GET.get('username').lower().strip()
+    for _ in username:
+        if _ == " ":
+            return JsonResponse({'status': '404'})
     if User.objects.filter(username__iexact=username).count() != 0:
         return JsonResponse({'status': '404'})
     else:
@@ -44,6 +47,10 @@ def signupJs(request):
         username = request.POST.get('username').lower().strip()
         email = request.POST.get('email').strip().lower()
         password = request.POST.get('pwd')
+
+        for _ in username:
+            if _ == " ":
+                return JsonResponse({'status': '404'})
 
         if fname != "" and lname != "" and username != "" and email != "" and password != "":
             if (User.objects.filter(email__iexact=email).count()) != 0 or (User.objects.filter(username__iexact=username).count()) != 0:
