@@ -18,6 +18,17 @@ def is_available(request):
         return JsonResponse({'status': '200'})
 
 
+def email_is_available(request):
+    email = request.GET.get('email').lower().strip()
+    print(len(email))
+    if User.objects.get(username=request.user).email == email:
+        return JsonResponse({'status': '200'})
+    elif len(email) == 0 or User.objects.filter(email__iexact=email).count() != 0:
+        return JsonResponse({'status': '404'})
+    else:
+        return JsonResponse({'status': '200'})
+
+
 def loginJs(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -63,6 +74,7 @@ def signupJs(request):
             user.email = email
             user.set_password(password)
             user.save()
+            print(request.user)
             login(request, user)
             status = "200"
 
@@ -74,13 +86,55 @@ def signupJs(request):
 
 
 @login_required
+def profile_update(request):
+    is_changed = False
+    if request.method == "POST":
+        f_name = request.POST.get('f_name').strip().title()
+        l_name = request.POST.get('l_name').strip().title()
+        profession = request.POST.get('profession').strip().title()
+        city = request.POST.get('city').strip().title()
+        cell = request.POST.get('cell').strip()
+        email = request.POST.get('email').lower().strip()
+        blood = request.POST.get('blood').strip()
+        gender = request.POST.get('gender').strip().title()
+
+        user = User.objects.get(username=request.user)
+        if user.first_name != f_name:
+            user.first_name = f_name
+            is_changed = True
+        if user.last_name != l_name:
+            user.last_name = l_name
+            is_changed = True
+        if user.email != email and (User.objects.filter(email__iexact=email).count()) == 0 and len(email) != 0:
+            user.email = email
+            is_changed = True
+
+        profile = Profile.objects.get(user=request.user)
+        profile.city = city
+        profile.gender = gender
+        profile.profession = profession
+        profile.cell = cell
+        profile.blood = blood
+        profile.save()
+
+        if is_changed:
+            user.save()
+        return JsonResponse({'status': '200'})
+
+
+@login_required
 def homeView(request):
     return render(request, 'main/home.html')
 
 
 @login_required
 def profileView(request):
-    return render(request, 'main/profile.html')
+    try:
+        user_profile = Profile.objects.get(user=request.user)
+    except:
+        user_profile = Profile(user=request.user)
+        user_profile.save()
+    return render(request, 'main/profile.html', {'user_profile': user_profile})
 
 
 def loginView(request):

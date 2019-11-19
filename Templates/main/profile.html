@@ -7,7 +7,8 @@
     <div class="row">
       <div class="col-md-8">
         <div class="profile">
-          <h1 class="page-header">{{user.first_name}} {{user.last_name}}</h1>
+          <h1 class="page-header" id="full_name">{{user.first_name}} {{user.last_name}}</h1>
+
           <div class="row">
             <div class="col-md-4 img-box">
               <img src="{% static 'main/img/user.png'%}" class="img-thumbnail">
@@ -15,31 +16,47 @@
             <div class="col-md-8">
               <div class="input-group mb-3">
 
-                <input type="text" class="form-control mbot-3" placeholder="First Name">
-                <input type="text" class="form-control mbot-3" placeholder="Last Name">
-                <input type="text" class="form-control mbot-3" placeholder="Profession">
-                <input type="text" class="form-control mbot-3" placeholder="City">
-                <input type="text" class="form-control mbot-3" placeholder="Cell No">
-                <input type="text" class="form-control mbot-3" placeholder="Email Address">
+                <form method="POST"> {%csrf_token%}
+                  <input type="text" class="form-control mbot-3" id="fname" readonly placeholder="First Name"
+                    value="{{ user.first_name }}">
+                  <input type="text" class="form-control mbot-3" id="lname" readonly placeholder="Last Name"
+                    value="{{ user.last_name }}">
+                  <input type="text" class="form-control mbot-3" id="pro" readonly placeholder="Profession"
+                    value="{% if user_profile.profession|length is not 0%}{{ user_profile.profession }}{%else%}{%endif%}">
+                  <input type="text" class="form-control mbot-3" id="city" readonly placeholder="City"
+                    value="{% if user_profile.city|length is not 0%}{{ user_profile.city }}{%else%}{%endif%}">
+                  <input type="text" class="form-control mbot-3" id="cell" readonly placeholder="Cell No"
+                    value="{% if user_profile.cell|length is not 0%}{{ user_profile.cell }}{%else%}{%endif%}">
+                  <input type="email" class="form-control mbot-3" id="email" readonly placeholder="Email Address"
+                    value="{{ user.email }}">
+                  <input type="text" class="form-control mbot-3" id="gender-show" readonly placeholder="Gender"
+                    value="{% if user_profile.gender|length is not 0%}{{ user_profile.gender }}{%else%}{%endif%}">
+                  <input type="text" class="form-control mbot-3" id="blood-show" readonly placeholder="Blood Group"
+                    value="{% if user_profile.blood|length is not 0%}{{ user_profile.blood }}{%else%}{%endif%}">
+                  <select class="form-control mbot-3 " id="gender">
+                    <option selected>
+                      {% if user_profile.gender|length is not 0%}{{ user_profile.gender }}{%else%}Gender{%endif%}
+                    </option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                  <select class="form-control mbot-3 " id='blood'>
+                    <option selected>
+                      {% if user_profile.blood|length is not 0%}{{ user_profile.blood }}{%else%}Blood{%endif%}</option>
+                    <option value="A+">A+</option>
+                    <option value="B+">B+</option>
+                    <option value="O+">O+</option>
+                    <option value="AB+">AB+</option>
+                    <option value="A-">A-</option>
+                    <option value="B-">B-</option>
+                    <option value="O-">O-</option>
+                    <option value="AB-">AB-</option>
+                  </select>
 
-                <select class="form-control mbot-3 " id="gender">
-                  <option selected>Gender</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
-                <select class="form-control mbot-3 " id='blood'>
-                  <option selected>Blood Group</option>
-                  <option value="A+">A+</option>
-                  <option value="B+">B+</option>
-                  <option value="O+">O+</option>
-                  <option value="AB+">AB+</option>
-                  <option value="A-">A-</option>
-                  <option value="B-">B-</option>
-                  <option value="O-">O-</option>
-                  <option value="AB-">AB-</option>
-                </select>
+                  <input type="submit" class="btn btn-default" style="float: right;" id="edit-btn" value="Edit">
 
-                <input type="submit" class="btn btn-default" style="float: right;" id="edit-btn" value="Edit">
+                </form>
+
               </div>
 
             </div>
@@ -70,6 +87,64 @@
                   </form>
                 </div>
               </div>
+
+
+
+              <div class="panel panel-default post">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-2">
+                      <a class="post-avatar thumbnail" href="profile.html"><img src="{% static 'main/img/user.png'%}">
+                        <div class="text-center">DevUser1</div>
+                      </a>
+                      <div class="likes text-center">7 Likes</div>
+                    </div><!-- col-sm-2 end -->
+                    <div class="col-sm-10">
+                      <div class="bubble">
+                        <div class="pointer">
+                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tincidunt eget ante eget
+                            feugiat.
+                            Praesent adipiscing tortor eu tincidunt tempus. Sed convallis est in ante sodales, sit amet
+                            consectetur leo commodo. </p>
+                        </div>
+                        <div class="pointer-border"></div>
+                      </div><!-- bubble end -->
+                      <p class="post-actions"><a href="#">Comment</a> - <a href="#">Like</a> - <a href="#">Follow</a> -
+                        <a href="#">Share</a> - <a href="#">Delete</a> </p>
+                      <div class="comment-form">
+                        <form class="form-inline">
+                          <div class="form-group">
+                            <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
+                          </div>
+                          <button type="submit" class="btn btn-default">Add</button>
+                        </form>
+                      </div><!-- comment form end -->
+                      <div class="clearfix"></div>
+
+                      <div class="comments">
+                        <div class="comment">
+                          <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
+                          <div class="comment-text">
+                            <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="comment">
+                          <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
+                          <div class="comment-text">
+                            <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
             </div>
           </div>
         </div>

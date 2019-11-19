@@ -11,4 +11,7 @@ urlpatterns = [
     path('loginjs/', views.loginJs),
     path('signupjs/', views.signupJs),
     path('username_check/', views.is_available),
+    path('email_check/', views.email_is_available),
+    path('profile_update/', views.profile_update),
+
 ]

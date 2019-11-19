@@ -148,6 +148,8 @@ footer {
 	font-weight: bold;
 	text-align: center;
 	border-top: 7px solid #56ab2f;
+
+
 }
 
 footer p {
@@ -332,4 +334,8 @@ a:hover {
 #text-post {
 	resize: vertical;
 
+}
+
+.red-border {
+	border: 2px solid rgba(214, 12, 12, 0.836) !important;
 }
