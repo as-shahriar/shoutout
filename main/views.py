@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Post, Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -134,7 +134,16 @@ def profileView(request):
     except:
         user_profile = Profile(user=request.user)
         user_profile.save()
-    return render(request, 'main/profile.html', {'user_profile': user_profile})
+
+    try:
+        post = Post.objects.filter(user=request.user)
+    except:
+        post = None
+    context = {
+        'user_profile': user_profile,
+        'posts': post,
+    }
+    return render(request, 'main/profile.html', context)
 
 
 def loginView(request):

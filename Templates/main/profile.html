@@ -89,28 +89,25 @@
               </div>
 
 
-
+              {% for post in posts %}
               <div class="panel panel-default post">
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-sm-2">
                       <a class="post-avatar thumbnail" href="profile.html"><img src="{% static 'main/img/user.png'%}">
-                        <div class="text-center">DevUser1</div>
+                        <div class="text-center">{{request.user}}</div>
                       </a>
-                      <div class="likes text-center">7 Likes</div>
+                      <div class="likes text-center">{{post.like}} Likes</div>
                     </div><!-- col-sm-2 end -->
                     <div class="col-sm-10">
                       <div class="bubble">
                         <div class="pointer">
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tincidunt eget ante eget
-                            feugiat.
-                            Praesent adipiscing tortor eu tincidunt tempus. Sed convallis est in ante sodales, sit amet
-                            consectetur leo commodo. </p>
+                          <p>{{post}}</p>
                         </div>
                         <div class="pointer-border"></div>
                       </div><!-- bubble end -->
                       <p class="post-actions"><a href="#">Comment</a> - <a href="#">Like</a> - <a href="#">Follow</a> -
-                        <a href="#">Share</a> - <a href="#">Delete</a> </p>
+                        <a href="#">Delete</a> </p>
                       <div class="comment-form">
                         <form class="form-inline">
                           <div class="form-group">
@@ -120,30 +117,23 @@
                         </form>
                       </div><!-- comment form end -->
                       <div class="clearfix"></div>
-
+                      {% for com in post.comment.all %}
                       <div class="comments">
                         <div class="comment">
                           <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
                           <div class="comment-text">
-                            <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
-                          </div>
-                        </div>
-                        <div class="clearfix"></div>
-
-                        <div class="comment">
-                          <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
-                          <div class="comment-text">
-                            <p>Sed convallis est in ante sodales, sit amet consectetur leo commodo.</p>
+                            <p>{{com.comment}}</p>
                           </div>
                         </div>
                         <div class="clearfix"></div>
                       </div>
+                      {%endfor%}
                     </div>
                   </div>
                 </div>
               </div>
 
-
+              {% endfor %}
 
             </div>
           </div>
