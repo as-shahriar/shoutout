@@ -7,6 +7,7 @@
 <a href="https://www.djangoproject.com/">Django 2.2</a>
 
 <h3>Installation:</h3>
+
 Create Database
 ```
 python manage.py migrate
