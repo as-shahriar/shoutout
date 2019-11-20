@@ -112,3 +112,62 @@ $("#email").change(function (e) {
     });
 
 });
+
+
+
+$("#submit-post").click(function (e) {
+    e.preventDefault();
+    var post = $("#text-post").val()
+    var html = $("#recent-post").html();
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+    ];
+
+    var user = $('#username').val();
+    var img = $('#img_url').val();
+    var today = new Date();
+    var time = monthNames[(today.getMonth())] + ', ' + today.getDate() + ', ' + today.getFullYear();
+
+    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src="' + img + '"> <div class="text-center">' + user + '</div> </a> <div class="likes text-center">0 Like</div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><p class="post-actions"><a href="#">Like</a> - <a href="#">Comment</a> - <a href="#">Follow</a> - <a href="#">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment"> </div> <button type="submit" class="btn btn-default">Add</button> </form> </div><div class="clearfix"></div> </div> </div> </div> </div> ';
+    html = new_html + html;
+
+    if (post.length == 0) {
+        $(".post-status-f").show();
+        setTimeout(function () {
+            $(".post-status-f").fadeOut();
+        }, 5000);
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "/new_post/",
+            data: {
+                post: post,
+                csrfmiddlewaretoken: csrftoken,
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log("success");
+                if (data.status == '200') {
+                    $("#recent-post").html(html);
+                    $(".post-status-s").show();
+                    setTimeout(function () {
+                        $(".post-status-s").fadeOut();
+                    }, 5000);
+                } else {
+                    $(".post-status-f").show();
+                    setTimeout(function () {
+                        $(".post-status-f").fadeOut();
+                    }, 5000);
+                }
+            },
+            error: function (data) {
+                $(".post-status-f").show();
+                setTimeout(function () {
+                    $(".post-status-f").fadeOut();
+                }, 5000);
+            }
+        });
+
+    }
+
+});

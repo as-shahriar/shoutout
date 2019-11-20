@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class Profile(models.Model):
@@ -27,6 +28,7 @@ class Post(models.Model):
     post = models.CharField(max_length=244, blank=True, null=True)
     like = models.PositiveIntegerField(default=0)
     comment = models.ManyToManyField(Comment, blank=True)
+    date = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
         return self.post

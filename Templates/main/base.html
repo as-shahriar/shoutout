@@ -18,7 +18,7 @@
         <div class="container">
 
             <div class="navbar-header">
-                <li class="soutout"><a href="#">ShoutOut</a></li>
+                <li class="soutout"><a href="{% url 'home_url' %}">ShoutOut</a></li>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -42,11 +42,7 @@
     {% block base %}
     {% endblock %}
 
-    <footer>
-        <div class="container">
-            <p>ShoutOut &copy; 2019</p>
-        </div>
-    </footer>
+
 
     <!-- Bootstrap core JavaScript
         ================================================== -->

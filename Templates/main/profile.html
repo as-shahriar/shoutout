@@ -53,10 +53,11 @@
                     <option value="AB-">AB-</option>
                   </select>
 
-                  <input type="submit" class="btn btn-default" style="float: right;" id="edit-btn" value="Edit">
+                  <input type="submit" class="btn btn-default float-right" id="edit-btn" value="Edit">
 
                 </form>
-
+                <input type="hidden" id='username' value="{{request.user}}">
+                <input type="hidden" id='img_url' value="/static/main/img/user.png">
               </div>
 
             </div>
@@ -69,26 +70,23 @@
                   <h3 class="panel-title">Profile Wall</h3>
                 </div>
                 <div class="panel-body">
-                  <form>
+                  <form method="POST"> {%csrf_token%}
                     <div class="form-group">
                       <textarea rows="4" class="form-control" id="text-post" placeholder="Write on the wall"></textarea>
                     </div>
-
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <div>
+                      <p class="post-status-s">Status Uploaded!</p>
+                      <p class="post-status-f">Status Uploading Failed!</p>
+                      <button type="submit" class="btn btn-default float-right" id='submit-post'>Submit</button>
+                    </div>
                     <div class="pull-right">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Text</button>
-                        <button type="button" class="btn btn-default"><i class="fa fa-file-image-o"></i>
-                          Image</button>
-                        <button type="button" class="btn btn-default"> <i class="fa fa-file-video-o"></i>
-                          Video</button>
-                      </div>
+
                     </div>
                   </form>
                 </div>
               </div>
 
-
+              <div id="recent-post"></div>
               {% for post in posts %}
               <div class="panel panel-default post">
                 <div class="panel-body">
@@ -97,7 +95,9 @@
                       <a class="post-avatar thumbnail" href="profile.html"><img src="{% static 'main/img/user.png'%}">
                         <div class="text-center">{{request.user}}</div>
                       </a>
-                      <div class="likes text-center">{{post.like}} Likes</div>
+                      <div class="likes text-center">{{post.like}}
+                        {%if post.like == 0 or post.like == 1 %}Like{%else%}Likes{%endif%}
+                      </div>
                     </div><!-- col-sm-2 end -->
                     <div class="col-sm-10">
                       <div class="bubble">
@@ -106,8 +106,9 @@
                         </div>
                         <div class="pointer-border"></div>
                       </div><!-- bubble end -->
-                      <p class="post-actions"><a href="#">Comment</a> - <a href="#">Like</a> - <a href="#">Follow</a> -
-                        <a href="#">Delete</a> </p>
+                      <p class="post-actions"><a href="#">Like</a> - <a href="#">Comment</a> - <a href="#">Follow</a> -
+                        <a href="#">Delete</a></p>
+                      <p class="time">{{post.date|date}}</p>
                       <div class="comment-form">
                         <form class="form-inline">
                           <div class="form-group">
@@ -138,6 +139,7 @@
             </div>
           </div>
         </div>
+
       </div><!-- col-md-8 end -->
 
       <div class="col-md-4">
@@ -165,36 +167,18 @@
           </div>
         </div>
 
-        <div class="panel panel-default groups">
-          <div class="panel-heading">
-            <h3 class="panel-title">Latest Groups</h3>
-          </div>
-          <div class="panel-body">
-            <div class="group-item">
-              <img src="img/group.png">
-              <h4><a href="#">Sample Group One</a></h4>
-              <p>This is a Dobble social network sample group</p>
-            </div>
-            <div class="clearfix"></div>
-            <div class="group-item">
-              <img src="img/group.png">
-              <h4><a href="#">Sample Group One</a></h4>
-              <p>This is a Dobble social network sample group</p>
-            </div>
-            <div class="clearfix"></div>
-            <div class="group-item">
-              <img src="img/group.png">
-              <h4><a href="#">Sample Group One</a></h4>
-              <p>This is a Dobble social network sample group</p>
-            </div>
-            <div class="clearfix"></div>
-            <a class="btn btn-green" href="#">View All Groups</a>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-
+  <div>{% if posts.has_previous %}
+    <a href="?page={{ posts.previous_page_number }}" class="btn btn-success pagination-btn">
+      Page {{ posts.previous_page_number }}</a> {%endif%} {% if posts.has_next %} <a
+      href="?page={{ posts.next_page_number }}" class="btn btn-success float-right pagination-btn">Page
+      {{ posts.next_page_number }}
+    </a>
+    {%endif%}</div>
+  <div class="button_cont" align="center"><a class="example_c" href="#" rel="nofollow noopener">Move to Top</a>
+  </div>
 </section>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

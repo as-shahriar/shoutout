@@ -5,6 +5,7 @@ from .models import Profile, Post, Comment
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 def is_available(request):
@@ -135,14 +136,23 @@ def profileView(request):
         user_profile = Profile(user=request.user)
         user_profile.save()
 
-    try:
-        post = Post.objects.filter(user=request.user)
-    except:
-        post = None
+    # for i in range(40):
+    #     u = Post()
+    #     u.post = "This is post"+str(i+1)
+    #     u.save()
+    #     u.user.add(request.user)
+
+    contact_list = Post.objects.order_by('-id').filter(user=request.user)
+    paginator = Paginator(contact_list, 10)  # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+
     context = {
         'user_profile': user_profile,
-        'posts': post,
+        'posts': posts,
     }
+
     return render(request, 'main/profile.html', context)
 
 
@@ -153,3 +163,17 @@ def loginView(request):
 def logoutView(request):
     logout(request)
     return redirect('login_url')
+
+
+@login_required
+def new_post(request):
+    if request.method == 'POST':
+        try:
+            newPost = Post()
+            newPost.post = request.POST.get('post')
+            newPost.save()
+            newPost.user.add(request.user)
+            status = {'status': '200'}
+        except:
+            status = {'status': '404'}
+    return JsonResponse(status)
