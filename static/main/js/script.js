@@ -1,4 +1,4 @@
-var home_url = "http://192.168.0.15:8000";
+var home_url = "http://127.0.0.1:8000";
 var luser = $("#username");
 var lpass = $("#pass");
 var alert = $("#alert-box");

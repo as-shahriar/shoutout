@@ -150,6 +150,7 @@ $("#submit-post").click(function (e) {
                 if (data.status == '200') {
                     $("#recent-post").html(html);
                     $(".post-status-s").show();
+                    $("#text-post").val('');
                     setTimeout(function () {
                         $(".post-status-s").fadeOut();
                     }, 5000);
