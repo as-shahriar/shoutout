@@ -4,11 +4,13 @@
 <a href="https://www.djangoproject.com/">Django 2.2</a>
 
 
-
+Create Database:
 ```
-function test() {
-  console.log("notice the blank line before this function?");
-}
+python manage.py migrate 
 ```
-
+Run Server
+```
+python manage.py runserver
+```
+Visit: 127.0.0.1:8000
 
