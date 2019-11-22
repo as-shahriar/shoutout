@@ -170,10 +170,45 @@ def new_post(request):
     if request.method == 'POST':
         try:
             newPost = Post()
-            newPost.post = request.POST.get('post')
+            newPost.post = request.POST.get('post').strip()
             newPost.save()
             newPost.user.add(request.user)
-            status = {'status': '200'}
+            status = {
+                'status': '200',
+                'post_id': newPost.id
+            }
         except:
             status = {'status': '404'}
+    return JsonResponse(status)
+
+
+@login_required
+def new_Comment(request):
+    if request.method == 'POST':
+        try:
+            newComment = Comment()
+            newComment.comment = request.POST.get('comment').strip()
+            newComment.save()
+            newComment.person.add(request.user)
+            post = Post.objects.get(id=request.POST.get('post_id'))
+            post.comment.add(newComment)
+            status = {'status': '200'}
+        except Exception:
+            raise
+            status = {'status': '404'}
+    return JsonResponse(status)
+
+
+@login_required
+def post_delete(request):
+    if request.method == 'POST':
+        try:
+            Post.objects.get(pk=request.POST['pk']).delete()
+            status = {
+                'status': '200',
+            }
+        except:
+            status = {
+                'status': '404',
+            }
     return JsonResponse(status)

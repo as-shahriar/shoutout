@@ -14,6 +14,7 @@ urlpatterns = [
     path('email_check/', views.email_is_available),
     path('profile_update/', views.profile_update),
     path('new_post/', views.new_post),
-
+    path('new_comment/', views.new_Comment),
+    path('delete_post/', views.post_delete)
 
 ]

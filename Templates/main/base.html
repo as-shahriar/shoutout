@@ -18,7 +18,7 @@
         <div class="container">
 
             <div class="navbar-header">
-                <li class="soutout"><a href="{% url 'home_url' %}">ShoutOut</a></li>
+                <li class="soutout"><a id="title-name" href="{% url 'home_url' %}">ShoutOut</a></li>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                     aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -31,7 +31,6 @@
                 <ul class="nav navbar-nav">
                     <li><a href="{% url 'home_url'%}">Home</a></li>
                     <li><a href="members.html">Members</a></li>
-                    <li><a href="groups.html">Groups</a></li>
                     <li><a href="{% url 'profile_url'%}">Profile</a></li>
                     <li><a href="{% url 'logout_url' %}">Logout</a></li>
                 </ul>

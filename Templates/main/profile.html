@@ -88,15 +88,16 @@
 
               <div id="recent-post"></div>
               {% for post in posts %}
-              <div class="panel panel-default post">
+              <div class="panel panel-default post" id="post-body-{{post.id}}">
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-sm-2">
                       <a class="post-avatar thumbnail" href="profile.html"><img src="{% static 'main/img/user.png'%}">
                         <div class="text-center">{{request.user}}</div>
                       </a>
-                      <div class="likes text-center">{{post.like}}
-                        {%if post.like == 0 or post.like == 1 %}Like{%else%}Likes{%endif%}
+                      <div class="likes text-center">
+                        <p id="post-{{post.id}}">{{post.like}}
+                          {%if post.like == 0 or post.like == 1 %}Like{%else%}Likes{%endif%}</p>
                       </div>
                     </div><!-- col-sm-2 end -->
                     <div class="col-sm-10">
@@ -106,22 +107,22 @@
                         </div>
                         <div class="pointer-border"></div>
                       </div><!-- bubble end -->
-                      <p class="post-actions"><a href="#">Like</a> - <a href="#">Comment</a> - <a href="#">Follow</a> -
-                        <a href="#">Delete</a></p>
+                      <p class="post-actions"><a href="#" data-id="{{post.id}}" class="delete-post">Delete</a></p>
                       <p class="time">{{post.date|date}}</p>
                       <div class="comment-form">
                         <form class="form-inline">
                           <div class="form-group">
-                            <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment">
+                            <input type="text" class="form-control" id="text-comment-{{post.id}}"
+                              placeholder="Enter Comment">
                           </div>
-                          <button type="submit" class="btn btn-default">Add</button>
+                          <button type="submit" data-id="{{post.id}}" class="btn btn-default btn-comment">Add</button>
                         </form>
                       </div><!-- comment form end -->
                       <div class="clearfix"></div>
                       {% for com in post.comment.all %}
                       <div class="comments">
                         <div class="comment">
-                          <a class="comment-avatar pull-left" href="#"><img src="img/user.png"></a>
+                          <a class="comment-avatar pull-left" href="#"><img src="{% static 'main/img/user.png'%}"></a>
                           <div class="comment-text">
                             <p>{{com.comment}}</p>
                           </div>
@@ -129,6 +130,8 @@
                         <div class="clearfix"></div>
                       </div>
                       {%endfor%}
+
+                      <div id="add-comment-{{post.id}}"></div>
                     </div>
                   </div>
                 </div>

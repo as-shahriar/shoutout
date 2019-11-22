@@ -117,7 +117,7 @@ $("#email").change(function (e) {
 
 $("#submit-post").click(function (e) {
     e.preventDefault();
-    var post = $("#text-post").val()
+    var post = $("#text-post").val();
     var html = $("#recent-post").html();
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
@@ -128,8 +128,7 @@ $("#submit-post").click(function (e) {
     var today = new Date();
     var time = monthNames[(today.getMonth())] + ', ' + today.getDate() + ', ' + today.getFullYear();
 
-    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src="' + img + '"> <div class="text-center">' + user + '</div> </a> <div class="likes text-center">0 Like</div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><p class="post-actions"><a href="#">Like</a> - <a href="#">Comment</a> - <a href="#">Follow</a> - <a href="#">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="exampleInputName2" placeholder="Enter Comment"> </div> <button type="submit" class="btn btn-default">Add</button> </form> </div><div class="clearfix"></div> </div> </div> </div> </div> ';
-    html = new_html + html;
+
 
     if (post.length == 0) {
         $(".post-status-f").show();
@@ -146,8 +145,11 @@ $("#submit-post").click(function (e) {
             },
             dataType: "json",
             success: function (data) {
-                console.log("success");
+
                 if (data.status == '200') {
+                    data.post_id
+                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src=""> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
+                    html = new_html + html;
                     $("#recent-post").html(html);
                     $(".post-status-s").show();
                     $("#text-post").val('');
@@ -171,4 +173,112 @@ $("#submit-post").click(function (e) {
 
     }
 
+});
+
+
+$(".like-btn").click(function (e) {
+    e.preventDefault();
+    let like_count_id = $(this).data("id");
+    $("#" + like_count_id).text("asif");
+});
+
+
+$(".btn-comment").click(function () {
+
+    let id = $(this).data("id");
+    let comment = $("#text-comment-" + id).val();
+
+    if (comment.length != 0) {
+        $("#text-comment-" + id).val('');
+        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="/static/main/img/user.png"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+        $("#add-comment-" + id).append(html);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/new_comment/",
+            data: {
+                comment: comment,
+                post_id: id,
+                csrfmiddlewaretoken: csrftoken,
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log(response.status);
+                if (response.status == '200') {
+
+                } else {
+
+                }
+            },
+
+        });
+    }
+
+
+});
+
+var comment = "";
+$("#recent-post").on("click", ".btn-comment",
+    function (e) {
+        e.preventDefault();
+        id = $(this).data("id");
+
+        if (comment.length != 0) {
+            $("#text-comment-" + id).val('');
+            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="/static/main/img/user.png"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+            $("#add-comment-" + id).append(html);
+
+
+            $.ajax({
+                type: "POST",
+                url: "/new_comment/",
+                data: {
+                    comment: comment,
+                    post_id: id,
+                    csrfmiddlewaretoken: csrftoken,
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.status);
+                    if (response.status == '200') {
+
+                    } else {
+
+                    }
+                },
+
+            });
+        }
+    });
+
+$("#recent-post").on("change", "input",
+    function () {
+        comment = $(this).val();
+    });
+
+
+
+
+
+$(".delete-post").click(function (e) {
+    e.preventDefault();
+    let id = $(this).data('id')
+    $.ajax({
+        type: "POST",
+        url: "/delete_post/",
+        data: {
+            pk: id,
+            csrfmiddlewaretoken: csrftoken,
+        },
+        dataType: "json",
+        success: function (response) {
+            if (response.status == "200") {
+                $("#post-body-" + id).remove();
+            } else {
+                alert("Faild To Delete!");
+            }
+
+        }
+    });
 });

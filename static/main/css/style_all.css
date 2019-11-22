@@ -216,11 +216,17 @@ a {
 
 }
 
-a:hover {
+a:hover,
+a:active,
+a:visited {
 	color: #489624;
 	text-decoration: none;
 	text-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.15);
 	outline: 0;
+}
+
+#title-name {
+	color: white;
 }
 
 .btn-green {
@@ -390,4 +396,8 @@ a:hover {
 	color: #d91e18;
 	display: none;
 
+}
+
+a.pagination-btn {
+	color: white;
 }
