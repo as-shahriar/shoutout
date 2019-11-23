@@ -16,11 +16,14 @@ $('#edit-btn').click(function (e) {
         document.getElementById("email").readOnly = false;
         $("#gender-show").hide();
         $("#blood-show").hide();
+        $("#pro_pic").hide();
+        $("#up_pic").show();
         $("#gender").show();
         $("#blood").show();
         $(this).val("Save");
     } else {
-
+        $("#pro_pic").show();
+        $("#up_pic").hide();
         $.ajax({
             type: "POST",
             url: "/profile_update/",
@@ -145,7 +148,7 @@ $("#submit-post").click(function (e) {
 
                 if (data.status == '200') {
                     data.post_id
-                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src=""> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#" data-id="' + data.post_id + '">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
+                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src="' + img + '"> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#" data-id="' + data.post_id + '">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
                     html = new_html + html;
                     $("#recent-post").html(html);
                     $(".post-status-s").show();
@@ -184,10 +187,11 @@ $(".btn-comment").click(function (e) {
     e.preventDefault();
     let id = $(this).data("id");
     let comment = $("#text-comment-" + id).val();
+    var img = $('#img_url').val();
 
     if (comment.length != 0) {
         $("#text-comment-" + id).val('');
-        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="/static/main/img/user.png"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="' + img + '"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
         $("#add-comment-" + id).append(html);
 
 
@@ -223,10 +227,11 @@ $("#recent-post").on("click", ".btn-comment",
     function (e) {
         e.preventDefault();
         id = $(this).data("id");
+        var img = $('#img_url').val();
 
         if (comment.length != 0) {
             $("#text-comment-" + id).val('');
-            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="/static/main/img/user.png"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="' + img + '"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
             $("#add-comment-" + id).append(html);
 
 
@@ -314,4 +319,50 @@ $(".delete-post").click(function (e) {
             alert("Faild To Delete!");
         }
     });
+});
+
+
+
+
+
+
+$(document).on('change', '#pic', function () {
+    var name = document.getElementById("pic").files[0].name;
+    var form_data = new FormData();
+    var ext = name.split('.').pop().toLowerCase();
+
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("pic").files[0]);
+    var f = document.getElementById("pic").files[0];
+    var fsize = f.size || f.fileSize;
+    if (jQuery.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+        alert("Invalid Image File");
+    } else if (fsize > 2000000) {
+        alert("Image File Size is very big");
+    } else {
+        form_data.append("img", document.getElementById('pic').files[0]);
+        form_data.append("id", $(this).data("id"));
+        form_data.append("is_img", "True");
+        form_data.append("csrfmiddlewaretoken", csrftoken);
+        $.ajax({
+            url: "/profile_update/",
+            method: "POST",
+            data: form_data,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            beforeSend: function () {
+                $(".loader").show();
+            },
+            success: function (data) {
+                $(".loader").hide();
+                if (data.status = "200") {
+                    $("#pro_pic").show();
+                    $("#up_pic").hide();
+                    $("#pro_pic").attr("src", data.img_url);
+                }
+            }
+        });
+    }
 });

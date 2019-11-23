@@ -10,14 +10,17 @@ class Profile(models.Model):
     profession = models.CharField(max_length=244, blank=True, null=True)
     blood = models.CharField(max_length=244, blank=True, null=True)
     cell = models.CharField(max_length=244, blank=True, null=True)
+    img = models.ImageField(upload_to='profile_pics',
+                            blank=True, default="profile_pics/default.png")
 
     def __str__(self):
         return self.user.username
 
 
 class Comment(models.Model):
-    person = models.ManyToManyField(User)
+    person = models.ManyToManyField(Profile)
     comment = models.CharField(max_length=244, blank=True, null=True)
+    username = models.CharField(max_length=244, blank=True, null=True)
 
     def __str__(self):
         return self.comment

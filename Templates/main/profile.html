@@ -11,7 +11,14 @@
 
           <div class="row">
             <div class="col-md-4 img-box">
-              <img src="{% static 'main/img/user.png'%}" class="img-thumbnail">
+              <form id="up_pic">
+                <div class="form-group">
+                  <label for="exampleFormControlFile1">Upload Profile Picture</label>
+                  <input type="file" class="form-control-file" id="pic" data-id="{{user_profile.id}}">
+                  <div class="loader"></div>
+                </div>
+              </form>
+              <img src="{{ user_profile.img.url }}" class="img-thumbnail" id="pro_pic">
             </div>
             <div class="col-md-8">
               <div class="input-group mb-3">
@@ -57,7 +64,7 @@
 
                 </form>
                 <input type="hidden" id='username' value="{{request.user}}">
-                <input type="hidden" id='img_url' value="/static/main/img/user.png">
+                <input type="hidden" id='img_url' value="{{ user_profile.img.url }}">
               </div>
 
             </div>
@@ -92,7 +99,7 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html"><img src="{% static 'main/img/user.png'%}">
+                      <a class="post-avatar thumbnail" href="profile.html"><img src="{{ user_profile.img.url }}">
                         <div class="text-center">{{request.user}}</div>
                       </a>
                       <div class="likes text-center">
@@ -122,7 +129,9 @@
                       {% for com in post.comment.all %}
                       <div class="comments">
                         <div class="comment">
-                          <a class="comment-avatar pull-left" href="#"><img src="{% static 'main/img/user.png'%}"></a>
+
+                          <a class="comment-avatar pull-left" href="#"><img
+                              src="{%for person in com.person.all %}{{ person.img.url }}{%endfor%}"></a>
                           <div class="comment-text">
                             <p>{{com.comment}}</p>
                           </div>
@@ -183,6 +192,8 @@
   <div class="button_cont" align="center"><a class="example_c" href="#" rel="nofollow noopener">Move to Top</a>
   </div>
 </section>
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="{% static 'main/js/profile.js'%}"></script>
