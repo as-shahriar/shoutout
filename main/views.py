@@ -203,7 +203,10 @@ def new_Comment(request):
 def post_delete(request):
     if request.method == 'POST':
         try:
-            Post.objects.get(pk=request.POST['pk']).delete()
+            post = Post.objects.get(pk=request.POST['pk'])
+            for comment in post.comment.all():
+                comment.delete()
+            post.delete()
             status = {
                 'status': '200',
             }

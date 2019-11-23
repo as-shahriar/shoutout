@@ -43,7 +43,7 @@ $('#edit-btn').click(function (e) {
                 $("#blood-show").val($("#blood").val());
             },
             error: function () {
-                console.log("Error");
+                alert("No Internet Connection!");
             }
         });
 
@@ -105,9 +105,6 @@ $("#email").change(function (e) {
                 $("#email").removeClass("red-border");
             }
             // console.log(data.status);
-        },
-        error: function () {
-            // console.log("Error");
         }
     });
 
@@ -148,7 +145,7 @@ $("#submit-post").click(function (e) {
 
                 if (data.status == '200') {
                     data.post_id
-                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src=""> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
+                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src=""> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#" data-id="' + data.post_id + '">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
                     html = new_html + html;
                     $("#recent-post").html(html);
                     $(".post-status-s").show();
@@ -183,8 +180,8 @@ $(".like-btn").click(function (e) {
 });
 
 
-$(".btn-comment").click(function () {
-
+$(".btn-comment").click(function (e) {
+    e.preventDefault();
     let id = $(this).data("id");
     let comment = $("#text-comment-" + id).val();
 
@@ -211,6 +208,9 @@ $(".btn-comment").click(function () {
 
                 }
             },
+            error: function () {
+                alert("No Internet Connection!");
+            }
 
         });
     }
@@ -247,14 +247,44 @@ $("#recent-post").on("click", ".btn-comment",
 
                     }
                 },
+                error: function () {
+                    alert("No Internet Connection!");
+                }
 
             });
         }
     });
 
 $("#recent-post").on("change", "input",
-    function () {
+    function (e) {
+        e.preventDefault();
         comment = $(this).val();
+    });
+
+$("#recent-post").on("click", "a",
+    function (e) {
+        e.preventDefault();
+        id = $(this).data("id");
+        $.ajax({
+            type: "POST",
+            url: "/delete_post/",
+            data: {
+                pk: id,
+                csrfmiddlewaretoken: csrftoken,
+            },
+            dataType: "json",
+            success: function (response) {
+                if (response.status == "200") {
+                    location.reload();
+                } else {
+                    alert("Faild To Delete!");
+                }
+
+            },
+            error: function () {
+                alert("Faild To Delete!");
+            }
+        });
     });
 
 
@@ -279,6 +309,9 @@ $(".delete-post").click(function (e) {
                 alert("Faild To Delete!");
             }
 
+        },
+        error: function () {
+            alert("Faild To Delete!");
         }
     });
 });
