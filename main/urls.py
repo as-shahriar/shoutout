@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile_update/', views.profile_update),
     path('new_post/', views.new_post),
     path('new_comment/', views.new_Comment),
-    path('delete_post/', views.post_delete)
+    path('delete_post/', views.post_delete),
+    path('member/', views.member, name="member")
 
 ]

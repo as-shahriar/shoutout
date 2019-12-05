@@ -149,14 +149,8 @@ def profileView(request):
         user_profile = Profile(user=request.user)
         user_profile.save()
 
-    # for i in range(40):
-    #     u = Post()
-    #     u.post = "This is post"+str(i+1)
-    #     u.save()
-    #     u.user.add(request.user)
-
     contact_list = Post.objects.order_by('-id').filter(user=request.user)
-    paginator = Paginator(contact_list, 10)  # Show 25 contacts per page
+    paginator = Paginator(contact_list, 10)  # Show 10 contacts per page
 
     page = request.GET.get('page')
     posts = paginator.get_page(page)
@@ -230,3 +224,18 @@ def post_delete(request):
                 'status': '404',
             }
     return JsonResponse(status)
+
+@login_required
+def member(request):
+    q =  request.GET.get('q')
+    if q != None:
+        members = Profile.objects.filter(city__iexact = q).exclude(user=request.user)
+        
+    else:    
+        member_list = Profile.objects.exclude(user=request.user)
+        paginator = Paginator(member_list, 2)  # Show 10 contacts per page
+
+        
+        page = request.GET.get('page')
+        members = paginator.get_page(page)
+    return render(request,"main/members.html",{"members":members})

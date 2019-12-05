@@ -1,191 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'main/base.html'%}
+{% load staticfiles %}
+{% block base %}
+<title>Members</title>
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Members: Dobble Social Network</title>
-  <!-- Bootstrap core CSS -->
-  <link href="css/bootstrap.css" rel="stylesheet">
-  <!-- Custom styles for this template -->
-  <link href="css/font-awesome.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-</head>
 
-<body>
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="members">
+          <h1 class="page-header">Members</h1>
+          <form method="get">
+            <div class="md-form mt-0" style="width:100%;">
+              <div style="display:flex; justify-content: center; margin-bottom: 20px;">
 
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-          aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="index.html">Home</a></li>
-          <li class="active"><a href="members.html">Members</a></li>
-          <li><a href="groups.html">Groups</a></li>
-          <li><a href="profile.html">Profile</a></li>
-        </ul>
-      </div>
-      <!--/.nav-collapse -->
-    </div>
-  </nav>
-
-  <section>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="members">
-            <h1 class="page-header">Members</h1>
-            <div class="row member-row">
-              <div class="col-md-3">
-                <img src="img/user.png" class="img-thumbnail">
-                <div class="text-center">SomeUser01</div>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-success btn-block"><i class="fa fa-users"></i> Add Friend</a></p>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
-
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p>
+                <input class="form-control" type="text" name="q" style="display: inline; max-width: 50%;"
+                  placeholder="Search">
+                <input type="submit" class="btn btn-danger" style="display: inline; margin-left: 5px;" value="Search">
 
               </div>
             </div>
+          </form>
+          {%if members %}
+          {% for member in members %}
 
-            <div class="row member-row">
-              <div class="col-md-3">
-                <img src="img/user.png" class="img-thumbnail">
-                <div class="text-center">SomeUser02</div>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-success btn-block"><i class="fa fa-users"></i> Add Friend</a></p>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
-
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p>
-
-              </div>
+          <div class="row member-row">
+            <div class="col-md-3 col-sm-3 col-xs-3">
+              <img src="{{member.img.url}}" class="img-thumbnail" style="min-height: 100px; min-width: 100px;">
             </div>
-
-            <div class="row member-row">
-              <div class="col-md-3">
-                <img src="img/user.png" class="img-thumbnail">
-                <div class="text-center">SomeUser03</div>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-success btn-block"><i class="fa fa-users"></i> Add Friend</a></p>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
-
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p>
-
-              </div>
-            </div>
-
-            <div class="row member-row">
-              <div class="col-md-3">
-                <img src="img/user.png" class="img-thumbnail">
-                <div class="text-center">SomeUser04</div>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-success btn-block"><i class="fa fa-users"></i> Add Friend</a></p>
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-default btn-block"><i class="fa fa-envelope"></i> Send Message</a></p>
-
-              </div>
-              <div class="col-md-3">
-                <p><a href="#" class="btn btn-primary btn-block"><i class="fa fa-edit"></i> View Profile</a></p>
-
+            <div class="col-md-8 col-sm-8 col-xs-12 member-detail-section">
+              <h3>{{member.user.first_name}} {{member.user.last_name}}</h3>
+              <h5>{% if member.profession|length is not 0%}{{member.profession}}{%endif%}</h5>
+              <div style="margin-top: 20px;">
+                <a href="#" class="btn btn-info btn-block member-btn">Follow</a>
+                <a href="#" class="btn btn-success btn-block member-btn">Message</a>
+                <a href="#" class="btn btn-danger btn-block member-btn">View Profile</a>
               </div>
             </div>
           </div>
-        </div><!-- col-md-8 end -->
 
-        <div class="col-md-4">
-          <div class="panel panel-default friends">
-            <div class="panel-heading">
-              <h3 class="panel-title">My Friends</h3>
-            </div>
-            <div class="panel-body">
-              <ul>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-                <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
-              </ul>
-              <div class="clearfix"></div>
-              <a class="btn btn-primary" href="#">View All Friends</a>
-            </div>
+          {% endfor %}
+          {%else%}
+          <h4>No Member Found</h4>
+          {%endif%}
+
+        </div>
+
+        <div>
+          {% if members.has_previous %}
+          <a href="?page={{ members.previous_page_number }}" class="btn btn-success pagination-btn">
+            Page {{ members.previous_page_number }}</a> {%endif%} {% if members.has_next %} <a
+            href="?page={{ members.next_page_number }}" class="btn btn-success float-right pagination-btn">Page
+            {{ members.next_page_number }}
+          </a>
+          {%endif%}
+        </div>
+
+      </div><!-- col-md-8 end -->
+
+      <div class="col-md-4">
+        <div class="panel panel-default friends">
+          <div class="panel-heading">
+            <h3 class="panel-title">My Friends</h3>
           </div>
-
-          <div class="panel panel-default groups">
-            <div class="panel-heading">
-              <h3 class="panel-title">Latest Groups</h3>
-            </div>
-            <div class="panel-body">
-              <div class="group-item">
-                <img src="img/group.png">
-                <h4><a href="#">Sample Group One</a></h4>
-                <p>This is a Dobble social network sample group</p>
-              </div>
-              <div class="clearfix"></div>
-              <div class="group-item">
-                <img src="img/group.png">
-                <h4><a href="#">Sample Group One</a></h4>
-                <p>This is a Dobble social network sample group</p>
-              </div>
-              <div class="clearfix"></div>
-              <div class="group-item">
-                <img src="img/group.png">
-                <h4><a href="#">Sample Group One</a></h4>
-                <p>This is a Dobble social network sample group</p>
-              </div>
-              <div class="clearfix"></div>
-              <a class="btn btn-primary" href="#">View All Groups</a>
-            </div>
+          <div class="panel-body">
+            <ul>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+            </ul>
+            <div class="clearfix"></div>
+            <a class="btn btn-primary" href="#">View All Friends</a>
           </div>
         </div>
+
+
       </div>
     </div>
+  </div>
 
-  </section>
 
-  <footer>
-    <div class="container">
-      <p>Dobble Copyright &copy; 2015, All Rights Reserved</p>
-    </div>
-  </footer>
 
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="js/bootstrap.js"></script>
-</body>
+</section>
 
-</html>
+{% endblock %}

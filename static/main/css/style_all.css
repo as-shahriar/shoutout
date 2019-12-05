@@ -219,7 +219,8 @@ a {
 a:hover,
 a:active,
 a:visited {
-	color: #489624;
+	color: #fff;
+	;
 	text-decoration: none;
 	text-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.15);
 	outline: 0;
@@ -288,6 +289,7 @@ a:visited {
 		min-width: 20%;
 
 	}
+
 
 }
 
@@ -434,4 +436,22 @@ a.pagination-btn {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+
+.member-btn {
+	display: inline;
+}
+
+#fname,
+#lname,
+#pro,
+#city,
+#cell,
+#email,
+#gender-show,
+#blood-show {
+	border: 0;
+	background: transparent;
+	cursor: pointer;
 }
