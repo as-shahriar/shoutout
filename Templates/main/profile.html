@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-md-8">
         <div class="profile">
-          <h1 class="page-header" id="full_name">{{user.first_name}} {{user.last_name}}</h1>
+          <h1 class="page-header" id="full_name">{{user_profile.name}}</h1>
 
           <div class="row">
             <div class="col-md-4 img-box">
@@ -156,6 +156,13 @@
               </div>
 
               {% endfor %}
+              <div>{% if posts.has_previous %}
+                <a href="?page={{ posts.previous_page_number }}" class="btn btn-success pagination-btn">
+                  Page {{ posts.previous_page_number }}</a> {%endif%} {% if posts.has_next %} <a
+                  href="?page={{ posts.next_page_number }}" class="btn btn-success float-right pagination-btn">Page
+                  {{ posts.next_page_number }}
+                </a>
+                {%endif%}</div>
 
             </div>
           </div>
@@ -182,15 +189,8 @@
       </div>
     </div>
   </div>
-  <div>{% if posts.has_previous %}
-    <a href="?page={{ posts.previous_page_number }}" class="btn btn-success pagination-btn">
-      Page {{ posts.previous_page_number }}</a> {%endif%} {% if posts.has_next %} <a
-      href="?page={{ posts.next_page_number }}" class="btn btn-success float-right pagination-btn">Page
-      {{ posts.next_page_number }}
-    </a>
-    {%endif%}</div>
-  <div class="button_cont" align="center"><a class="example_c" href="#" rel="nofollow noopener">Move to Top</a>
-  </div>
+
+
 </section>
 
 

@@ -1,0 +1,161 @@
+{% extends 'main/base.html'%}
+{% load staticfiles %}
+{% block base %}
+
+<style>
+    a,
+    a:hover,
+    a:active,
+    a:visited {
+        color: #56ab2f;
+    }
+</style>
+<title>ShoutOut | {{user_info.username}}</title>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="profile">
+                    <h1 class="page-header" id="full_name">{{profile.name}}</h1>
+
+                    <div class="row">
+                        <div class="col-md-4 img-box">
+                            <img src="{{ profile.img.url }}" class="img-thumbnail">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="input-group mb-3">
+
+
+                                <input type="text" class="form-control mbot-3" id="fname" readonly
+                                    placeholder="First Name"
+                                    value="Name: {{ user_info.first_name }} {{ user_info.last_name }}">
+
+                                <input type="text" class="form-control mbot-3" id="pro" readonly
+                                    placeholder="Profession"
+                                    value="{% if profile.profession|length is not 0%}Profession: {{ profile.profession }}{%else%}{%endif%}">
+                                <input type="text" class="form-control mbot-3" id="city" readonly placeholder="City"
+                                    value="{% if profile.city|length is not 0%}City: {{ profile.city }}{%else%}{%endif%}">
+                                <input type="text" class="form-control mbot-3" id="cell" readonly placeholder="Cell No"
+                                    value="{% if profile.cell|length is not 0%}Cell: {{ profile.cell }}{%else%}{%endif%}">
+                                <input type="email" class="form-control mbot-3" id="email" readonly
+                                    placeholder="Email Address" value="Email: {{ user_info.email }}">
+                                <input type="text" class="form-control mbot-3" id="gender-show" readonly
+                                    placeholder="Gender"
+                                    value="{% if profile.gender|length is not 0%}Gender: {{ profile.gender }}{%else%}{%endif%}">
+                                <input type="text" class="form-control mbot-3" id="blood-show" readonly
+                                    placeholder="Blood Group"
+                                    value="{% if profile.blood|length is not 0%}Blood: {{ profile.blood }}{%else%}{%endif%}">
+
+                                <input type="hidden" id='username' value="{{request.user}}">
+                                <input type="hidden" id='img_url' value="{{ profile.img.url }}">
+                            </div>
+
+                        </div>
+                    </div>
+                    <br></br>
+                    <div class=" row">
+                        <div class="col-md-12">
+
+
+                            <div id="recent-post"></div>
+                            {% for post in posts %}
+                            <div class="panel panel-default post" id="post-body-{{post.id}}">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <a class="post-avatar thumbnail" href="profile.html"><img
+                                                    src="{{ profile.img.url }}">
+                                                <div class="text-center">{{user_info.username}}</div>
+                                            </a>
+                                            <div class="likes text-center">
+                                                <p id="post-{{post.id}}">{{post.like}}
+                                                    {%if post.like == 0 or post.like == 1 %}Like{%else%}Likes{%endif%}
+                                                </p>
+                                            </div>
+                                        </div><!-- col-sm-2 end -->
+                                        <div class="col-sm-10">
+                                            <div class="bubble">
+                                                <div class="pointer">
+                                                    <p>{{post}}</p>
+                                                </div>
+                                                <div class="pointer-border"></div>
+                                            </div><!-- bubble end -->
+                                            <p class="post-actions"><a href="#" data-id="{{post.id}}"
+                                                    class="like-post">Like</a></p>
+                                            <p class="time">{{post.date|date}}</p>
+                                            <div class="comment-form">
+                                                <form class="form-inline">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"
+                                                            id="text-comment-{{post.id}}" placeholder="Enter Comment">
+                                                    </div>
+                                                    <button type="submit" data-id="{{post.id}}"
+                                                        class="btn btn-default btn-comment">Add</button>
+                                                </form>
+                                            </div><!-- comment form end -->
+                                            <div class="clearfix"></div>
+                                            {% for com in post.comment.all %}
+                                            <div class="comments">
+                                                <div class="comment">
+
+                                                    <a class="comment-avatar pull-left" href="#"><img
+                                                            src="{%for person in com.person.all %}{{ person.img.url }}{%endfor%}"></a>
+                                                    <div class="comment-text">
+                                                        <p>{{com.comment}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            {%endfor%}
+
+                                            <div id="add-comment-{{post.id}}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endfor %}
+
+                            <div>{% if posts.has_previous %}
+                                <a href="?page={{ posts.previous_page_number }}" class="btn btn-success pagination-btn">
+                                    Page {{ posts.previous_page_number }}</a> {%endif%} {% if posts.has_next %} <a
+                                    href="?page={{ posts.next_page_number }}"
+                                    class="btn btn-success float-right pagination-btn">Page
+                                    {{ posts.next_page_number }}
+                                </a>
+                                {%endif%}</div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- col-md-8 end -->
+
+            <div class="col-md-4">
+                <div class="panel panel-default friends">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">My Friends</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+                            <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+
+                        </ul>
+                        <div class="clearfix"></div>
+                        <a class="btn btn-green" href="#">View All Friends</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{% static 'main/js/profile.js'%}"></script>
+{% endblock %}

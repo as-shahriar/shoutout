@@ -29,19 +29,23 @@
               <img src="{{member.img.url}}" class="img-thumbnail" style="min-height: 100px; min-width: 100px;">
             </div>
             <div class="col-md-8 col-sm-8 col-xs-12 member-detail-section">
-              <h3>{{member.user.first_name}} {{member.user.last_name}}</h3>
+              <h3>{{member.name}}</h3>
               <h5>{% if member.profession|length is not 0%}{{member.profession}}{%endif%}</h5>
+              <h5>
+                {% if member.blood|length is not 0%}{{member.blood}}{%endif%} |
+                {% if member.city|length is not 0%}{{member.city}}{%endif%}</h5>
               <div style="margin-top: 20px;">
                 <a href="#" class="btn btn-info btn-block member-btn">Follow</a>
-                <a href="#" class="btn btn-success btn-block member-btn">Message</a>
-                <a href="#" class="btn btn-danger btn-block member-btn">View Profile</a>
+                <a href="#" class="btn btn-success btn-block member-btn" disabled>Message</a>
+                <a href="{% url 'others_profile' member.user %}" class="btn btn-danger btn-block member-btn">View
+                  Profile</a>
               </div>
             </div>
           </div>
 
           {% endfor %}
           {%else%}
-          <h4>No Member Found</h4>
+          <h4 align="center">No Member Found</h4>
           {%endif%}
 
         </div>

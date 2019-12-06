@@ -5,11 +5,12 @@ from datetime import datetime
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city = models.CharField(max_length=244, blank=True, null=True)
-    gender = models.CharField(max_length=244, blank=True, null=True)
-    profession = models.CharField(max_length=244, blank=True, null=True)
-    blood = models.CharField(max_length=244, blank=True, null=True)
-    cell = models.CharField(max_length=244, blank=True, null=True)
+    name = models.CharField(max_length=244, blank=True, null=True)
+    city = models.CharField(max_length=60, blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    profession = models.CharField(max_length=60, blank=True, null=True)
+    blood = models.CharField(max_length=6, blank=True, null=True)
+    cell = models.CharField(max_length=15, blank=True, null=True)
     img = models.ImageField(upload_to='profile_pics',
                             blank=True, default="profile_pics/default.png")
 

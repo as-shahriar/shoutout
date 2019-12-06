@@ -16,6 +16,7 @@ urlpatterns = [
     path('new_post/', views.new_post),
     path('new_comment/', views.new_Comment),
     path('delete_post/', views.post_delete),
-    path('member/', views.member, name="member")
+    path('member/', views.member, name="member"),
+    path('user/<slug>',views.others_profile, name = "others_profile")
 
 ]

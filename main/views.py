@@ -124,6 +124,7 @@ def profile_update(request):
                 is_changed = True
 
             profile = Profile.objects.get(user=request.user)
+            profile.name = f_name +" "+ l_name
             profile.city = city
             profile.gender = gender
             profile.profession = profession
@@ -229,7 +230,7 @@ def post_delete(request):
 def member(request):
     q =  request.GET.get('q')
     if q != None:
-        members = Profile.objects.filter(city__iexact = q).exclude(user=request.user)
+        members = Profile.objects.filter(name__icontains = q).exclude(user=request.user) | Profile.objects.filter(city__iexact = q).exclude(user=request.user) | Profile.objects.filter(blood__iexact = q).exclude(user=request.user)
         
     else:    
         member_list = Profile.objects.exclude(user=request.user)
@@ -239,3 +240,19 @@ def member(request):
         page = request.GET.get('page')
         members = paginator.get_page(page)
     return render(request,"main/members.html",{"members":members})
+
+def others_profile(request,slug):
+    user = User.objects.get(username=slug)
+    profile = Profile.objects.get(user=user)
+
+    contact_list = Post.objects.order_by('-id').filter(user=user)
+    paginator = Paginator(contact_list, 10)  # Show 10 contacts per page
+
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    context = {
+        "user_info": user,
+        "profile": profile,
+        "posts":posts
+    }
+    return render(request,"main/others_profile.html",context)
