@@ -49,14 +49,14 @@
                     value="{% if user_profile.gender|length is not 0%}{{ user_profile.gender }}{%else%}{%endif%}">
                   <input type="text" class="form-control mbot-3" id="blood-show" readonly placeholder="Blood Group"
                     value="{% if user_profile.blood|length is not 0%}{{ user_profile.blood }}{%else%}{%endif%}">
-                  <select class="form-control mbot-3 " id="gender">
+                  <select class="form-control mbot-3 " id="gender" style="display: none;">
                     <option selected>
                       {% if user_profile.gender|length is not 0%}{{ user_profile.gender }}{%else%}Gender{%endif%}
                     </option>
                     <option>Male</option>
                     <option>Female</option>
                   </select>
-                  <select class="form-control mbot-3 " id='blood'>
+                  <select class="form-control mbot-3 " id='blood' style="display: none;">
                     <option selected>
                       {% if user_profile.blood|length is not 0%}{{ user_profile.blood }}{%else%}Blood{%endif%}</option>
                     <option value="A+">A+</option>
@@ -74,6 +74,10 @@
                 </form>
                 <input type="hidden" id='username' value="{{request.user}}">
                 <input type="hidden" id='img_url' value="{{ user_profile.img.url }}">
+                <input type="hidden" id='current_user_name' value="{{ user_profile.name }}">
+
+
+
               </div>
 
             </div>
@@ -108,7 +112,7 @@
                 <div class="panel-body">
                   <div class="row">
                     <div class="col-sm-2">
-                      <a class="post-avatar thumbnail" href="profile.html"><img src="{{ user_profile.img.url }}">
+                      <a class="post-avatar thumbnail" href="#"><img src="{{ user_profile.img.url }}">
                         <div class="text-center">{{request.user}}</div>
                       </a>
                       <div class="likes text-center">
@@ -139,10 +143,13 @@
                       <div class="comments">
                         <div class="comment">
 
-                          <a class="comment-avatar pull-left" href="#"><img
-                              src="{%for person in com.person.all %}{{ person.img.url }}{%endfor%}"></a>
+                          {%for person in com.person.all %}
+                          <a class="comment-avatar pull-left" href="{% url 'others_profile' person.user %}"><img
+                              src="{{ person.img.url }}"></a>
                           <div class="comment-text">
-                            <p>{{com.comment}}</p>
+                            <p><a href="{% url 'others_profile' person.user %}"><b>{{ person.name }}</b>{%endfor%}:
+                                </b></a>
+                              {{com.comment}}</p>
                           </div>
                         </div>
                         <div class="clearfix"></div>

@@ -148,7 +148,7 @@ $("#submit-post").click(function (e) {
 
                 if (data.status == '200') {
                     data.post_id
-                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="profile.html"><img src="' + img + '"> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#" data-id="' + data.post_id + '">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
+                    new_html = '<div class="panel panel-default post"> <div class="panel-body"> <div class="row"> <div class="col-sm-2"> <a class="post-avatar thumbnail" href="#"><img src="' + img + '"> <div class="text-center">' + user + '</div> </a> <div class="likes text-center"> <p id="post-' + data.post_id + '">0 Like</p> </div> </div><!-- col-sm-2 end --> <div class="col-sm-10"> <div class="bubble"> <div class="pointer"> <p>' + post + '</p> </div> <div class="pointer-border"></div> </div><!-- bubble end --> <p class="post-actions"><a href="#" data-id="' + data.post_id + '">Delete</a></p> <p class="time">' + time + '</p> <div class="comment-form"> <form class="form-inline"> <div class="form-group"> <input type="text" class="form-control" id="text-comment-' + data.post_id + '" placeholder="Enter Comment"> </div> <button type="submit" data-id="' + data.post_id + '" class="btn btn-default btn-comment">Add</button> </form> </div><!-- comment form end --> <div class="clearfix"></div> <div id="add-comment-' + data.post_id + '"></div> </div> </div> </div> </div> ';
                     html = new_html + html;
                     $("#recent-post").html(html);
                     $(".post-status-s").show();
@@ -191,7 +191,7 @@ $(".btn-comment").click(function (e) {
 
     if (comment.length != 0) {
         $("#text-comment-" + id).val('');
-        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="' + img + '"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
         $("#add-comment-" + id).append(html);
 
 
@@ -231,7 +231,7 @@ $("#recent-post").on("click", ".btn-comment",
 
         if (comment.length != 0) {
             $("#text-comment-" + id).val('');
-            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="#"><img src="' + img + '"></a> <div class="comment-text"> <p>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
+            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
             $("#add-comment-" + id).append(html);
 
 
@@ -268,28 +268,31 @@ $("#recent-post").on("change", "input",
 
 $("#recent-post").on("click", "a",
     function (e) {
-        e.preventDefault();
-        id = $(this).data("id");
-        $.ajax({
-            type: "POST",
-            url: "/delete_post/",
-            data: {
-                pk: id,
-                csrfmiddlewaretoken: csrftoken,
-            },
-            dataType: "json",
-            success: function (response) {
-                if (response.status == "200") {
-                    location.reload();
-                } else {
+
+        if ($(this).text() == "Delete") {
+            e.preventDefault();
+            id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/delete_post/",
+                data: {
+                    pk: id,
+                    csrfmiddlewaretoken: csrftoken,
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == "200") {
+                        location.reload();
+                    } else {
+                        alert("Faild To Delete!");
+                    }
+
+                },
+                error: function () {
                     alert("Faild To Delete!");
                 }
-
-            },
-            error: function () {
-                alert("Faild To Delete!");
-            }
-        });
+            });
+        }
     });
 
 
@@ -297,6 +300,7 @@ $("#recent-post").on("click", "a",
 
 
 $(".delete-post").click(function (e) {
+
     e.preventDefault();
     let id = $(this).data('id')
     $.ajax({

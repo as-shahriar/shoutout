@@ -148,6 +148,7 @@ def profileView(request):
         user_profile = Profile.objects.get(user=request.user)
     except:
         user_profile = Profile(user=request.user)
+        user_profile.name = request.user.first_name +" "+ request.user.last_name
         user_profile.save()
 
     contact_list = Post.objects.order_by('-id').filter(user=request.user)
@@ -242,8 +243,11 @@ def member(request):
     return render(request,"main/members.html",{"members":members})
 
 def others_profile(request,slug):
+    if slug == request.user.username:
+        return redirect('profile_url')
     user = User.objects.get(username=slug)
     profile = Profile.objects.get(user=user)
+    current_user_profile = Profile.objects.get(user=request.user)
 
     contact_list = Post.objects.order_by('-id').filter(user=user)
     paginator = Paginator(contact_list, 10)  # Show 10 contacts per page
@@ -253,6 +257,7 @@ def others_profile(request,slug):
     context = {
         "user_info": user,
         "profile": profile,
-        "posts":posts
+        "posts":posts,
+        "curent_user": current_user_profile
     }
     return render(request,"main/others_profile.html",context)

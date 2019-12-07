@@ -47,7 +47,9 @@
                                     value="{% if profile.blood|length is not 0%}Blood: {{ profile.blood }}{%else%}{%endif%}">
 
                                 <input type="hidden" id='username' value="{{request.user}}">
-                                <input type="hidden" id='img_url' value="{{ profile.img.url }}">
+                                <input type="hidden" id='img_url' value="{{ curent_user.img.url }}">
+                                <input type="hidden" id='current_user_name' value="{{ curent_user.name }}">
+
                             </div>
 
                         </div>
@@ -63,8 +65,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-sm-2">
-                                            <a class="post-avatar thumbnail" href="profile.html"><img
-                                                    src="{{ profile.img.url }}">
+                                            <a class="post-avatar thumbnail" href="#"><img src="{{ profile.img.url }}">
                                                 <div class="text-center">{{user_info.username}}</div>
                                             </a>
                                             <div class="likes text-center">
@@ -98,10 +99,14 @@
                                             <div class="comments">
                                                 <div class="comment">
 
-                                                    <a class="comment-avatar pull-left" href="#"><img
-                                                            src="{%for person in com.person.all %}{{ person.img.url }}{%endfor%}"></a>
+                                                    {%for person in com.person.all %}
+                                                    <a class="comment-avatar pull-left"
+                                                        href="{% url 'others_profile' person.user %}"><img
+                                                            src="{{ person.img.url }}"></a>
                                                     <div class="comment-text">
-                                                        <p>{{com.comment}}</p>
+                                                        <p><a href="{% url 'others_profile' person.user %}"><b>{{ person.name }}</b>{%endfor%}:
+                                                                </b></a>
+                                                            {{com.comment}}</p>
                                                     </div>
                                                 </div>
                                                 <div class="clearfix"></div>
