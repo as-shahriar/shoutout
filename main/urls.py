@@ -17,6 +17,8 @@ urlpatterns = [
     path('new_comment/', views.new_Comment),
     path('delete_post/', views.post_delete),
     path('member/', views.member, name="member"),
-    path('user/<slug>',views.others_profile, name = "others_profile")
+    path('user/<slug>', views.others_profile, name="others_profile"),
+    path('delte_comment/', views.delete_comment),
+
 
 ]

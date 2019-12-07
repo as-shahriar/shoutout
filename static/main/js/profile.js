@@ -191,8 +191,7 @@ $(".btn-comment").click(function (e) {
 
     if (comment.length != 0) {
         $("#text-comment-" + id).val('');
-        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
-        $("#add-comment-" + id).append(html);
+
 
 
         $.ajax({
@@ -207,6 +206,8 @@ $(".btn-comment").click(function (e) {
             success: function (response) {
                 console.log(response.status);
                 if (response.status == '200') {
+                    html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '<a class="float-right delete-comment" data-id="' + response.comment_id + '" href="#">Delete</a></p> </div> </div> <div class="clearfix"></div> </div> ';
+                    $("#add-comment-" + id).append(html);
 
                 } else {
 
@@ -231,10 +232,6 @@ $("#recent-post").on("click", ".btn-comment",
 
         if (comment.length != 0) {
             $("#text-comment-" + id).val('');
-            html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '</p> </div> </div> <div class="clearfix"></div> </div> ';
-            $("#add-comment-" + id).append(html);
-
-
             $.ajax({
                 type: "POST",
                 url: "/new_comment/",
@@ -247,6 +244,8 @@ $("#recent-post").on("click", ".btn-comment",
                 success: function (response) {
                     console.log(response.status);
                     if (response.status == '200') {
+                        html = '<div class="comments"> <div class="comment"> <a class="comment-avatar pull-left" href="/user/' + $("#username").val() + '"><img src="' + img + '"></a> <div class="comment-text"> <p><a href="/user/' + $("#username").val() + '"><b>' + $("#current_user_name").val() + '</b>: </a>' + comment + '<a class="float-right delete-comment" data-id="' + response.comment_id + '" href="#">X</a></p> </div> </div> <div class="clearfix"></div> </div> ';
+                        $("#add-comment-" + id).append(html);
 
                     } else {
 
@@ -292,6 +291,28 @@ $("#recent-post").on("click", "a",
                     alert("Faild To Delete!");
                 }
             });
+        } else if ($(this).text() == "X") {
+            e.preventDefault();
+            id = $(this).data("id");
+            $.ajax({
+                type: "POST",
+                url: "/delte_comment/",
+                data: {
+                    comment_id: id,
+                    csrfmiddlewaretoken: csrftoken,
+                },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == "200") {
+                        location.reload();
+                    } else {
+                        alert("Error in Comment Deletion.");
+                    }
+                },
+                error: function (response) {
+                    alert("No internet connection");
+                }
+            });
         }
     });
 
@@ -313,7 +334,7 @@ $(".delete-post").click(function (e) {
         dataType: "json",
         success: function (response) {
             if (response.status == "200") {
-                $("#post-body-" + id).remove();
+                $("#post-body-" + id).fadeOut();
             } else {
                 alert("Faild To Delete!");
             }

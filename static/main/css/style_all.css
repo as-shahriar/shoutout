@@ -76,7 +76,7 @@ header .logo {
 .comment {
 	border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 3px;
+	padding: 8px;
 	margin: 5px 0;
 	overflow: auto;
 	width: 100%;
@@ -435,4 +435,12 @@ a:visited {
 	border: 0;
 	background: transparent;
 	cursor: pointer;
+}
+
+.delete-comment {
+	font-size: small;
+}
+
+.delete-comment:hover {
+	color: red;
 }

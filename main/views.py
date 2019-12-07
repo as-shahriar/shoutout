@@ -203,7 +203,7 @@ def new_Comment(request):
                 user=request.user))
             post = Post.objects.get(id=request.POST.get('post_id'))
             post.comment.add(newComment)
-            status = {'status': '200'}
+            status = {'status': '200','comment_id': newComment.id}
         except Exception:
             raise
             status = {'status': '404'}
@@ -242,6 +242,7 @@ def member(request):
         members = paginator.get_page(page)
     return render(request,"main/members.html",{"members":members})
 
+@login_required
 def others_profile(request,slug):
     if slug == request.user.username:
         return redirect('profile_url')
@@ -261,3 +262,12 @@ def others_profile(request,slug):
         "curent_user": current_user_profile
     }
     return render(request,"main/others_profile.html",context)
+
+
+def delete_comment(request):
+    if request.method == "POST":
+        comment = Comment.objects.get(id=request.POST.get('comment_id'))
+        if request.user.username == comment.username:
+            comment.delete()
+            return JsonResponse({'status':'200'})
+    return JsonResponse({'status':'404'})

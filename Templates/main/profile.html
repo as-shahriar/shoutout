@@ -140,23 +140,26 @@
                       </div><!-- comment form end -->
                       <div class="clearfix"></div>
                       {% for com in post.comment.all %}
-                      <div class="comments">
+                      <div class="comments" id="comment-{{com.id}}">
                         <div class="comment">
 
                           {%for person in com.person.all %}
                           <a class="comment-avatar pull-left" href="{% url 'others_profile' person.user %}"><img
                               src="{{ person.img.url }}"></a>
                           <div class="comment-text">
-                            <p><a href="{% url 'others_profile' person.user %}"><b>{{ person.name }}</b>{%endfor%}:
+                            <p><a href="{% url 'others_profile' person.user %}"><b>{{ person.name }}:
                                 </b></a>
-                              {{com.comment}}</p>
+                              {{com.comment}} <br>{% if request.user == person.user%}<a
+                                class="float-right delete-comment" data-id="{{com.id}}"
+                                href="#">Delete</a>{%endif%}{%endfor%}
+                            </p>
                           </div>
                         </div>
                         <div class="clearfix"></div>
                       </div>
                       {%endfor%}
 
-                      <div id="add-comment-{{post.id}}"></div>
+                      <div class="comment-delete-btn" id="add-comment-{{post.id}}"></div>
                     </div>
                   </div>
                 </div>
@@ -180,7 +183,22 @@
       <div class="col-md-4">
         <div class="panel panel-default friends">
           <div class="panel-heading">
-            <h3 class="panel-title">My Friends</h3>
+            <h3 class="panel-title">Following</h3>
+          </div>
+          <div class="panel-body">
+            <ul>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+              <li><a class="thumbnail" href="profile.html"><img src="img/user.png"></a></li>
+
+            </ul>
+            <div class="clearfix"></div>
+            <a class="btn btn-green" href="#">View All Friends</a>
+          </div>
+        </div>
+
+        <div class="panel panel-default friends">
+          <div class="panel-heading">
+            <h3 class="panel-title">Followers</h3>
           </div>
           <div class="panel-body">
             <ul>
