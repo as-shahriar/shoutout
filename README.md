@@ -1,5 +1,5 @@
 <h1>SoutOut</h1>
-<p>Social communication site using Django, Bootstrap, jQuery. Used Ajax to some sections like login, checking unique
+<p>in process...<br>Social communication site using Django, Bootstrap, jQuery. Used Ajax to some sections like login, checking unique
     username
     and email, posting new posts.</p>
 <h3>Requirements</h3>
